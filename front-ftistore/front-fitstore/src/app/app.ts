@@ -1,16 +1,19 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { Header } from './leiaute/header/header';
-import { Footer } from './leiaute/footer/footer';
+import { FormsModule } from '@angular/forms';
+import { Header } from "./leiaute/header/header";
+import { Footer } from "./leiaute/footer/footer";
 import { Menu } from "./leiaute/menu/menu";
-import { Principal } from './principal/principal';
+import { Principal } from "./principal/principal";
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Header, Footer, Menu,Principal],
+  imports: [FormsModule, Header, Footer, Menu, Principal, RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('front-fitstore');
+  protected readonly title = signal('ecommerce');
+
+
 }
