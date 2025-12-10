@@ -10,7 +10,7 @@
           <h2 class="product-name">{{ produto.nome }}</h2>
           <p class="product-brand">{{ produto.marca.descricao }}</p>
           <p class="product-price">R$ {{ produto.preco }}</p>
-          <button class="buy-button">Comprar</button>
+          <button class="buy-button" (click)="adicionarAoCarrinho(produto)">🛒 Adicionar ao Carrinho</button>
         </article>
         }        
       </div>

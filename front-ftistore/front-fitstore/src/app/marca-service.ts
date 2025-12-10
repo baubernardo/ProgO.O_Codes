@@ -6,12 +6,11 @@ import { API_CONFIG } from './config/api.config';
 @Injectable({
   providedIn: 'root',
 })
-export class CategoriaService {
+export class MarcaService {
   private http = inject(HttpClient);
   private baseUrl = API_CONFIG.baseUrl;
-  
-  listar(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/categorias`);
-  }
 
+  listar(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/marcas`);
+  }
 }

@@ -67,6 +67,8 @@ public class ProdutoController {
     }
 
     @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public RestResponse salvar(Produto produto) {
         Produto newProduto = produtoService.save(produto);
         return RestResponse.ResponseBuilder.ok(newProduto).status(RestResponse.Status.CREATED).build();

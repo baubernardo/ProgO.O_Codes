@@ -1,0 +1,18 @@
+.theme-toggle {
+	background: transparent;
+	border: none;
+	color: inherit;
+	font-size: 1.1rem;
+	cursor: pointer;
+	padding: 6px 8px;
+	border-radius: 6px;
+	transition: background-color 0.15s, opacity 0.15s;
+}
+.theme-toggle:hover {
+	opacity: 0.9;
+	background-color: rgba(255,255,255,0.06);
+}
+
+@media (max-width: 768px) {
+	.theme-toggle { font-size: 1rem; }
+}

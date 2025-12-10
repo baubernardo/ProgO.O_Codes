@@ -1,0 +1,59 @@
+<section class="carrinho-container">
+  <h1>🛒 Seu Carrinho</h1>
+
+  @if (itens.length === 0) {
+    <div class="carrinho-vazio">
+      <p>Seu carrinho está vazio</p>
+      <a href="/" class="btn-voltar">← Voltar para Produtos</a>
+    </div>
+  } @else {
+    <div class="carrinho-conteudo">
+      <div class="itens-lista">
+        @for (item of itens; track item.id) {
+          <div class="item-card">
+            @if (item.imagem) {
+              <div class="item-imagem">
+                <img [src]="'http://localhost:8080/produtos/' + item.id + '/image'" alt="{{ item.nome }}" />
+              </div>
+            }
+            <div class="item-info">
+              <h3>{{ item.nome }}</h3>
+              <p class="preco">R$ {{ (item.preco).toFixed(2) }}</p>
+            </div>
+
+            <div class="item-quantidade">
+              <button (click)="diminuirQuantidade(item.id, item.quantidade)" class="qty-btn">−</button>
+              <input type="number" [(ngModel)]="item.quantidade" (change)="atualizarQuantidade(item.id, item.quantidade)" />
+              <button (click)="aumentarQuantidade(item.id, item.quantidade)" class="qty-btn">+</button>
+            </div>
+
+            <div class="item-subtotal">
+              R$ {{ (item.preco * item.quantidade).toFixed(2) }}
+            </div>
+
+            <button class="btn-remover" (click)="removerItem(item.id)">🗑️ Remover</button>
+          </div>
+        }
+      </div>
+
+      <div class="carrinho-resumo">
+        <h2>Resumo</h2>
+        <div class="resumo-linha">
+          <span>Subtotal:</span>
+          <span>R$ {{ total.toFixed(2) }}</span>
+        </div>
+        <div class="resumo-linha destaque">
+          <span>Total:</span>
+          <span>R$ {{ total.toFixed(2) }}</span>
+        </div>
+
+        <div class="acoes">
+          <a href="/" class="btn-voltar">← Continuar Comprando</a>
+          <a href="/checkout" class="btn-checkout">Ir para Checkout →</a>
+        </div>
+
+        <button class="btn-limpar" (click)="limparCarrinho()">Limpar Carrinho</button>
+      </div>
+    </div>
+  }
+</section>

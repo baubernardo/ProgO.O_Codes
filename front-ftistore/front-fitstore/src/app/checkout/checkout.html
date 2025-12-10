@@ -1,0 +1,188 @@
+<section class="checkout-container">
+  <h1>Finalizar Compra</h1>
+
+  <!-- Indicador de Passo -->
+  <div class="step-indicator">
+    <div class="step" [class.active]="step === 'adicionar-itens'">
+      <span class="step-number">1</span>
+      <span class="step-title">Confirmar Itens</span>
+    </div>
+    <div class="step-connector" [class.active]="step === 'confirmar'"></div>
+    <div class="step" [class.active]="step === 'confirmar'">
+      <span class="step-number">2</span>
+      <span class="step-title">Finalizar</span>
+    </div>
+  </div>
+
+  <!-- Mensagens -->
+  @if (successMessage) {
+    <div class="alert alert-success">{{ successMessage }}</div>
+  }
+  @if (errorMessage) {
+    <div class="alert alert-error">{{ errorMessage }}</div>
+  }
+
+  <div class="checkout-conteudo">
+    <!-- PASSO 1: Adicionar Itens ao Pedido -->
+    @if (step === 'adicionar-itens') {
+      <div class="step-container">
+        <h2>Revisar Itens do Carrinho</h2>
+        
+        <div class="itens-lista">
+          @for (item of itens; track item.id) {
+            <div class="item-card">
+              @if (item.imagem) {
+                <img [src]="item.imagem" [alt]="item.nome" class="item-imagem" />
+              }
+              <div class="item-info">
+                <h3>{{ item.nome }}</h3>
+                <p>Quantidade: {{ item.quantidade }}</p>
+                <p class="preco">R$ {{ item.preco.toFixed(2) }}</p>
+              </div>
+              <div class="item-subtotal">
+                Subtotal: <strong>R$ {{ (item.preco * item.quantidade).toFixed(2) }}</strong>
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="checkout-resumo-passo1">
+          <h3>Total: <strong>R$ {{ total.toFixed(2) }}</strong></h3>
+          <p class="info-texto">
+            ℹ️ Seus itens serão adicionados a um pedido com status <strong>ABERTO</strong>.
+            <br />Você poderá adicionar ou remover itens antes de confirmar.
+          </p>
+        </div>
+
+        <div class="acoes">
+          <button type="button" class="btn-voltar" (click)="voltarAoCarrinho()">← Voltar ao Carrinho</button>
+          <button type="button" class="btn-proximo" (click)="adicionarItensToPedido()" [disabled]="loading">
+            @if (loading) {
+              <span class="spinner"></span> Processando...
+            } @else {
+              Prosseguir para Confirmação →
+            }
+          </button>
+        </div>
+      </div>
+    }
+
+    <!-- PASSO 2: Confirmar Pedido com Dados Pessoais -->
+    @if (step === 'confirmar') {
+      <form [formGroup]="checkoutForm" (ngSubmit)="finalizarCompra()" class="checkout-form">
+        <h2>Informações Pessoais</h2>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nome Completo *</label>
+            <input formControlName="nomeCompleto" type="text" placeholder="João Silva" />
+            @if (checkoutForm.get('nomeCompleto')?.invalid && checkoutForm.get('nomeCompleto')?.touched) {
+              <span class="error-text">{{ getNomeError() }}</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label>Email *</label>
+            <input formControlName="email" type="email" placeholder="joao@example.com" />
+            @if (checkoutForm.get('email')?.invalid && checkoutForm.get('email')?.touched) {
+              <span class="error-text">{{ getEmailError() }}</span>
+            }
+          </div>
+        </div>
+
+        <div class="form-group full">
+          <label>Telefone *</label>
+          <input formControlName="telefone" type="tel" placeholder="(11) 99999-9999" />
+        </div>
+
+        <h2>Endereço de Entrega</h2>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Endereço *</label>
+            <input formControlName="endereco" type="text" placeholder="Rua Principal" />
+          </div>
+          <div class="form-group">
+            <label>Número *</label>
+            <input formControlName="numero" type="text" placeholder="123" />
+          </div>
+        </div>
+
+        <div class="form-group full">
+          <label>Complemento</label>
+          <input formControlName="complemento" type="text" placeholder="Apt 42, Bloco B" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Bairro *</label>
+            <input formControlName="bairro" type="text" placeholder="Centro" />
+          </div>
+          <div class="form-group">
+            <label>Cidade *</label>
+            <input formControlName="cidade" type="text" placeholder="São Paulo" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>UF *</label>
+            <input formControlName="uf" type="text" placeholder="SP" maxlength="2" />
+          </div>
+          <div class="form-group">
+            <label>CEP *</label>
+            <input formControlName="cep" type="text" placeholder="01310-100" />
+          </div>
+        </div>
+
+        <h2>Método de Pagamento</h2>
+
+        <div class="form-group full">
+          <select formControlName="metodo_pagamento">
+            <option value="cartao">Cartão de Crédito</option>
+            <option value="pix">PIX</option>
+            <option value="boleto">Boleto</option>
+            <option value="transferencia">Transferência Bancária</option>
+          </select>
+        </div>
+
+        <div class="acoes">
+          <button type="button" class="btn-voltar" (click)="step = 'adicionar-itens'">← Voltar</button>
+          <button type="submit" class="btn-finalizar" [disabled]="loading">
+            @if (loading) {
+              <span class="spinner"></span> Finalizando...
+            } @else {
+              Confirmar e Finalizar →
+            }
+          </button>
+        </div>
+      </form>
+
+      <!-- Resumo da Compra (lado direito) -->
+      <div class="checkout-resumo">
+        <h2>Resumo da Compra</h2>
+
+        <div class="itens-resumo">
+          @for (item of itens; track item.id) {
+            <div class="resumo-item">
+              <span class="nome">{{ item.nome }} × {{ item.quantidade }}</span>
+              <span class="preco">R$ {{ (item.preco * item.quantidade).toFixed(2) }}</span>
+            </div>
+          }
+        </div>
+
+        <div class="resumo-total">
+          <span>Total:</span>
+          <span class="valor">R$ {{ total.toFixed(2) }}</span>
+        </div>
+
+        @if (pedidoUuid) {
+          <div class="info-pedido">
+            <p><strong>UUID Pedido:</strong></p>
+            <p class="uuid-text">{{ pedidoUuid }}</p>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</section>

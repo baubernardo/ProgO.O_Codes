@@ -4,6 +4,36 @@
 /* styles.css - CSS ÚNICO PARA O E-COMMERCE */
 /* ========================================= */
 
+/* Variáveis de tema (modo claro por padrão) */
+:root {
+    --bg: #f4f4f4;
+    --text: #333333;
+    --primary: #007bff;
+    --primary-dark: #0056b3;
+    --primary-darker: #004080;
+    --muted: #666666;
+    --card-bg: #ffffff;
+    --accent: #28a745;
+    --warning: #ffc107;
+    --footer-bg: #343a40;
+    --header-text: #ffffff;
+}
+
+/* Tema escuro (aplicado com a classe .dark-theme no <html>) */
+.dark-theme {
+    --bg: #0f1720;
+    --text: #e6e6e6;
+    --primary: #1e88e5;
+    --primary-dark: #1565c0;
+    --primary-darker: #0d47a1;
+    --muted: #bdbdbd;
+    --card-bg: #171a1f;
+    --accent: #66bb6a;
+    --warning: #ffb300;
+    --footer-bg: #071023;
+    --header-text: #ffffff;
+}
+
 /* Reset Básico */
 * {
     box-sizing: border-box;
@@ -13,8 +43,8 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
+    background-color: var(--bg);
+    color: var(--text);
 }
 
 /* Layout Principal */
@@ -30,11 +60,11 @@ body {
 /* ========================================= */
 
 .header {
-    background-color: #007bff;
+    background-color: var(--primary);
     /* Azul primário */
-    color: white;
+    color: var(--header-text);
     padding: 15px 30px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
 .header-content {
@@ -61,7 +91,7 @@ body {
     margin: 0 20px;
     border-radius: 4px;
     overflow: hidden;
-    background-color: white;
+    background-color: var(--card-bg);
 }
 
 .search-input {
@@ -72,9 +102,9 @@ body {
 }
 
 .search-button {
-    background-color: #0056b3;
+    background-color: var(--primary-dark);
     /* Azul mais escuro */
-    color: white;
+    color: var(--header-text);
     border: none;
     padding: 10px 15px;
     cursor: pointer;
@@ -82,7 +112,7 @@ body {
 }
 
 .search-button:hover {
-    background-color: #004080;
+    background-color: var(--primary-darker);
 }
 
 /* Ações do Usuário/Carrinho */
@@ -93,7 +123,7 @@ body {
 }
 
 .action-link {
-    color: white;
+    color: var(--header-text);
     text-decoration: none;
     font-size: 0.9em;
     padding: 5px;
@@ -111,7 +141,7 @@ body {
 }
 
 .cart-count {
-    background-color: #ffc107;
+    background-color: var(--warning);
     /* Amarelo de destaque */
     color: #333;
     border-radius: 50%;
@@ -138,7 +168,7 @@ body {
 .sidebar {
     width: 250px;
     padding: 15px;
-    background-color: white;
+    background-color: var(--card-bg);
     border-radius: 4px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
     margin-right: 20px;
@@ -156,7 +186,7 @@ body {
 
 .filter-group h4 {
     margin-bottom: 10px;
-    color: #007bff;
+    color: var(--primary);
 }
 
 .filter-list {
@@ -191,8 +221,8 @@ body {
 
 /* Card de Produto */
 .product-card {
-    background-color: white;
-    border: 1px solid #ddd;
+    background-color: var(--card-bg);
+    border: 1px solid rgba(0,0,0,0.06);
     border-radius: 8px;
     padding: 15px;
     text-align: center;
@@ -204,37 +234,48 @@ body {
 }
 
 .product-image {
-    background-color: #eee;
+    background-color: #e9ecef;
     height: 150px;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 10px;
-    color: #999;
+    color: var(--muted);
+    overflow: hidden;
+    border-radius: 6px;
+}
+
+.product-image img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
 }
 
 .product-name {
     font-size: 1.1em;
     margin-bottom: 5px;
-    color: #007bff;
+    color: var(--primary);
 }
 
 .product-brand {
     font-size: 0.9em;
-    color: #666;
+    color: var(--muted);
     margin-bottom: 10px;
 }
 
 .product-price {
     font-size: 1.4em;
     font-weight: bold;
-    color: #28a745;
+    color: var(--accent);
     /* Verde de preço */
     margin-bottom: 15px;
 }
 
 .buy-button {
-    background-color: #ffc107;
+    background-color: var(--warning);
     color: #333;
     border: none;
     padding: 10px 20px;
@@ -253,9 +294,9 @@ body {
 /* ========================================= */
 
 .footer {
-    background-color: #343a40;
+    background-color: var(--footer-bg);
     /* Cinza escuro */
-    color: white;
+    color: var(--header-text);
     padding: 30px 20px;
     margin-top: 30px;
 }
@@ -270,7 +311,7 @@ body {
 
 .contact-info h4 {
     margin-bottom: 10px;
-    color: #007bff;
+    color: var(--primary);
 }
 
 .contact-info p {

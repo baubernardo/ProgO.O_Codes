@@ -1,0 +1,166 @@
+<section class="add-product">
+  <h1>Adicionar Novo Produto</h1>
+
+  <!-- Mensagens de sucesso/erro -->
+  @if (successMessage) {
+    <div class="alert alert-success">{{ successMessage }}</div>
+  }
+  @if (errorMessage) {
+    <div class="alert alert-error">{{ errorMessage }}</div>
+  }
+
+  <form [formGroup]="produtoForm" (ngSubmit)="salvar()" class="add-product-form">
+
+    <div class="form-group">
+      <label>
+        Nome do Produto *
+        <input 
+          formControlName="nome" 
+          type="text" 
+          placeholder="Ex: Camiseta Azul"
+          [class.is-invalid]="produtoForm.get('nome')?.invalid && produtoForm.get('nome')?.touched"
+        />
+      </label>
+      @if (produtoForm.get('nome')?.invalid && produtoForm.get('nome')?.touched) {
+        <span class="error-text">{{ getNomeError() }}</span>
+      }
+    </div>
+
+    <!-- DESCRIÇÃO -->
+    <div class="form-group">
+      <label>
+        Descrição
+        <textarea 
+          formControlName="descricao" 
+          placeholder="Descrição do produto (opcional)"
+        ></textarea>
+      </label>
+    </div>
+
+    <!-- CATEGORIA -->
+    <div class="form-group">
+      <label>
+        Categoria * ({{ categorias.length }} disponíveis)
+        <select 
+          formControlName="categoriaId"
+          [class.is-invalid]="produtoForm.get('categoriaId')?.invalid && produtoForm.get('categoriaId')?.touched"
+        >
+          <option value="" disabled selected>Selecione uma categoria</option>
+          @for (cat of categorias; track cat.id) {
+            <option [value]="cat.id">{{ cat.nome }}</option>
+          }
+        </select>
+      </label>
+      @if (produtoForm.get('categoriaId')?.invalid && produtoForm.get('categoriaId')?.touched) {
+        <span class="error-text">Categoria é obrigatória</span>
+      }
+    </div>
+
+    <!-- MARCA -->
+    <div class="form-group">
+      <label>
+        Marca * ({{ marcas.length }} disponíveis)
+        <select 
+          formControlName="marcaId"
+          [class.is-invalid]="produtoForm.get('marcaId')?.invalid && produtoForm.get('marcaId')?.touched"
+        >
+          <option value="" disabled selected>Selecione uma marca</option>
+          @for (marca of marcas; track marca.id) {
+            <option [value]="marca.id">{{ marca.descricao }}</option>
+          }
+        </select>
+      </label>
+      @if (produtoForm.get('marcaId')?.invalid && produtoForm.get('marcaId')?.touched) {
+        <span class="error-text">Marca é obrigatória</span>
+      }
+    </div>
+
+    <!-- PREÇO -->
+    <div class="form-group">
+      <label>
+        Preço (R$) *
+        <input 
+          formControlName="preco" 
+          type="number" 
+          step="0.01"
+          min="0"
+          placeholder="Ex: 59.90"
+          [class.is-invalid]="produtoForm.get('preco')?.invalid && produtoForm.get('preco')?.touched"
+        />
+      </label>
+      @if (produtoForm.get('preco')?.invalid && produtoForm.get('preco')?.touched) {
+        <span class="error-text">{{ getPrecoError() }}</span>
+      }
+    </div>
+
+    <!-- QUANTIDADE EM ESTOQUE -->
+    <div class="form-group">
+      <label>
+        Quantidade em Estoque *
+        <input 
+          formControlName="quantidadeEstoque" 
+          type="number" 
+          min="0"
+          placeholder="Ex: 100"
+          [class.is-invalid]="produtoForm.get('quantidadeEstoque')?.invalid && produtoForm.get('quantidadeEstoque')?.touched"
+        />
+      </label>
+      @if (produtoForm.get('quantidadeEstoque')?.invalid && produtoForm.get('quantidadeEstoque')?.touched) {
+        <span class="error-text">{{ getQuantidadeError() }}</span>
+      }
+    </div>
+
+    <!-- ATIVO -->
+    <div class="form-group checkbox">
+      <label>
+        <input 
+          formControlName="ativo" 
+          type="checkbox"
+        />
+        Produto Ativo
+      </label>
+    </div>
+
+    <!-- IMAGEM -->
+    <div class="form-group">
+      <label>
+        Imagem do Produto (JPEG/PNG, máx. 10MB — será redimensionada para máx. 1MB)
+        <input 
+          type="file" 
+          accept="image/jpeg,image/png"
+          (change)="onFileSelected($event)"
+          [disabled]="loading"
+        />
+      </label>
+      @if (imagePreview) {
+        <div class="image-preview-container">
+          <img [src]="imagePreview" alt="Preview" class="image-preview" />
+          <button 
+            type="button" 
+            class="remove-image-btn"
+            (click)="removerImagem()"
+            [disabled]="loading"
+          >
+            ✕ Remover
+          </button>
+        </div>
+      }
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="actions">
+      <button 
+        type="submit" 
+        class="buy-button"
+        [disabled]="loading"
+      >
+        @if (loading) {
+          <span class="spinner"></span> Salvando...
+        } @else {
+          Salvar Produto
+        }
+      </button>
+      <a href="/" class="cancel-btn">Cancelar</a>
+    </div>
+  </form>
+</section>
